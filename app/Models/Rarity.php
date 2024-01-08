@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Rarity extends Model
 {
     use HasFactory;
+
+    public function card(){
+        return $this->hasMany('App\Models\Card');
+    }
 }

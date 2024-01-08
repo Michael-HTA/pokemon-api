@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Card;
 use Illuminate\Http\Request;
+use App\Models\Type;
 
 class CardController extends Controller
 {
@@ -12,7 +13,7 @@ class CardController extends Controller
      */
     public function index()
     {
-        //
+        return $data = Type::all();
     }
 
     /**
@@ -26,9 +27,9 @@ class CardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Card $card)
+    public function show(Type $card)
     {
-        //
+        return Type::find($card);
     }
 
     /**
