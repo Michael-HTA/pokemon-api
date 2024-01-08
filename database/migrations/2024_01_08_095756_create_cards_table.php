@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->stirng('name');
+            $table->string('name');
             $table->float('price', 8,2);
             $table->integer('card_count');
-            $table->integer('type_id');
-            $table->integer('set_id');
-            $table->integer('rarity_id');
-            $table->integer('user_id');
+            $table->foreignId('type_id');
+            $table->foreignId('set_id');
+            $table->foreignId('rarity_id');
+            $table->foreignId('user_id');
             $table->string('image');
             $table->timestamps();
         });
