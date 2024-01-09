@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('set_id');
             $table->foreignId('rarity_id');
             $table->foreignId('user_id');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use App\Models\Rarity;
 use App\Models\Set;
 use Illuminate\Http\Request;
 use App\Models\Type;
+use Illuminate\Support\Facades\Storage;
 
 class CardController extends Controller
 {
@@ -32,9 +33,44 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+
+    private function infoValidation(){
+        return request()->validate([
+            'name' => 'required|string',
+            'price' => 'required|decimal:2',
+            'card_count' => 'required|integer',
+            'type_id' => 'required|integer',
+            'set_id' => 'required|integer',
+            'image' => 'nullable|image',
+            'rarity_id' => 'required|integer',
+        ]);
+    }
+
+    private function infoSaving($card){
+        $card->name = request()->name;
+        $card->price = request()->price;
+        $card->card_count = request()->card_count;
+        if(request()->hasFile('image')){
+            if($card->image){
+                Storage::delete($card->image);
+            }
+            $card->image = request()->file('image')->store();
+        }
+        $card->type_id = request()->type_id;
+        $card->set_id = request()->set_id;
+        $card->rarity_id = request()->rarity_id;
+        $card->user_id = auth()->id();
+        $card->save();
+
+        return $card;
+    }
+
+
+    public function store()
     {
-        //
+        $this->infoValidation();
+        $card = new Card();
+        return $this->infoSaving($card);
     }
 
     /**
@@ -42,7 +78,7 @@ class CardController extends Controller
      */
     public function show(Type $card)
     {
-        return Type::find($card);
+        return Card::find($card);
     }
 
     /**
@@ -50,7 +86,9 @@ class CardController extends Controller
      */
     public function update(Request $request, Card $card)
     {
-        //
+        $this->infoValidation();
+        $card = Card::find($card);
+        return $this->infoSaving($card);
     }
 
     /**
@@ -58,6 +96,8 @@ class CardController extends Controller
      */
     public function destroy(Card $card)
     {
-        //
+        $card = Card::find($card);
+        Storage::delete($card->image);
+        $card->delete();
     }
 }
