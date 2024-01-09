@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Card;
+use App\Models\Rarity;
+use App\Models\Set;
 use Illuminate\Http\Request;
 use App\Models\Type;
 
@@ -13,7 +15,18 @@ class CardController extends Controller
      */
     public function index()
     {
-        return $data = Type::all();
+        $card = Card::latest()->get();
+        $type = Type::all();
+        $set = Set::all();
+        $rarity = Rarity::all();
+
+
+        return [
+            'card' => $card,
+            'type' => $type,
+            'set' => $set,
+            'rarity' => $rarity,
+        ];
     }
 
     /**
