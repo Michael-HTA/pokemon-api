@@ -42,8 +42,8 @@ class CardController extends Controller
             'card_count' => 'required|integer',
             'type_id' => 'required|integer',
             'set_id' => 'required|integer',
-            'image' => 'nullable|image',
-            'active' => Rule::in([0,1]),
+            'image' => 'image',
+            'active' =>Rule::in([0,1]),
             'rarity_id' => 'required|integer',
         ]);
     }
@@ -57,16 +57,18 @@ class CardController extends Controller
             $card->image = request()->file('image')->store();
         }
 
-        if(request()->active){
+        if(request()->has('active')){
             $card->active = request()->active;
+        }else{
+            $card->active = 1;
         }
         $card->name = request()->name;
         $card->price = request()->price;
         $card->card_count = request()->card_count;
         $card->type_id = request()->type_id;
         $card->set_id = request()->set_id;
-        $card->rarity_id = request()->rarity_id; 
-        $card->user_id = auth()->id();
+        $card->rarity_id = request()->rarity_id;
+        $card->user_id = request()->user_id;
         $card->save();
 
         return $card;
