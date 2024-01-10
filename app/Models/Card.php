@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Card extends Model
 {
-    protected $cardActive = 1;
-
+    private $active = 1;
     use HasFactory;
+
+    public function getActive(){
+        return $this->active;
+    }
 
     public function type(){
         return $this->belongsTo('App\Models\Type');

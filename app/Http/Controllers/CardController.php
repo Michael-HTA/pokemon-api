@@ -60,8 +60,9 @@ class CardController extends Controller
         if(request()->has('active')){
             $card->active = request()->active;
         }else{
-            $card->active = 1;
+            $card->active = $card->getActive();
         }
+
         $card->name = request()->name;
         $card->price = request()->price;
         $card->card_count = request()->card_count;
