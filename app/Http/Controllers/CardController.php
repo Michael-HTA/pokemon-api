@@ -8,6 +8,7 @@ use App\Models\Set;
 use Illuminate\Http\Request;
 use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class CardController extends Controller
 {
@@ -42,23 +43,29 @@ class CardController extends Controller
             'type_id' => 'required|integer',
             'set_id' => 'required|integer',
             'image' => 'nullable|image',
+            'active' => Rule::in([0,1]),
             'rarity_id' => 'required|integer',
         ]);
     }
 
     private function infoSaving($card){
-        $card->name = request()->name;
-        $card->price = request()->price;
-        $card->card_count = request()->card_count;
+
         if(request()->hasFile('image')){
             if($card->image){
                 Storage::delete($card->image);
             }
             $card->image = request()->file('image')->store();
         }
+
+        if(request()->active){
+            $card->active = request()->active;
+        }
+        $card->name = request()->name;
+        $card->price = request()->price;
+        $card->card_count = request()->card_count;
         $card->type_id = request()->type_id;
         $card->set_id = request()->set_id;
-        $card->rarity_id = request()->rarity_id;
+        $card->rarity_id = request()->rarity_id; 
         $card->user_id = auth()->id();
         $card->save();
 

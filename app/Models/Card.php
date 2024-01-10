@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Card extends Model
 {
+    public $active = 1;
+    
     use HasFactory;
 
     public function type(){

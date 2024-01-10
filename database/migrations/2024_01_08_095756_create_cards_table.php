@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('rarity_id');
             $table->foreignId('user_id');
             $table->string('image')->nullable();
+            $table->tinyInteger('active');
             $table->timestamps();
         });
     }
