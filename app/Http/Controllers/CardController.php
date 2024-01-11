@@ -7,6 +7,7 @@ use App\Models\Rarity;
 use App\Models\Set;
 use Illuminate\Http\Request;
 use App\Models\Type;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -17,7 +18,8 @@ class CardController extends Controller
      */
     public function index()
     {
-        $card = Card::latest()->filter()->get();
+        $user = Card::where('user_id',Auth::id());
+        $card = Card::latest()->filter()->where('active',1)->union($user)->get();
         $type = Type::all();
         $set = Set::all();
         $rarity = Rarity::all();

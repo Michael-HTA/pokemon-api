@@ -21,7 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/card',CardController::class);
-Route::get('/filter/set/{id}',[CategoryController::class,'set']);
-Route::get('/filter/type/{id}',[CategoryController::class,'type']);
-Route::get('/filter/rarity/{id}',[CategoryController::class,'rarity']);
+Route::prefix('v1')->group(function(){
+    Route::resource('/card',CardController::class);
+    Route::get('/filter/{id}/set',[CategoryController::class,'set']);
+    Route::get('/filter/{id}/type',[CategoryController::class,'type']);
+    Route::get('/filter/{id}/rarity',[CategoryController::class,'rarity']);
+});
