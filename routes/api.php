@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CardController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Builder\Class_;
@@ -21,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('/card',CardController::class);
+Route::get('/filter/set/{id}',[CategoryController::class,'set']);
+Route::get('/filter/type/{id}',[CategoryController::class,'type']);
+Route::get('/filter/rarity/{id}',[CategoryController::class,'rarity']);

@@ -17,7 +17,7 @@ class CardController extends Controller
      */
     public function index()
     {
-        $card = Card::latest()->get();
+        $card = Card::latest()->filter()->get();
         $type = Type::all();
         $set = Set::all();
         $rarity = Rarity::all();
