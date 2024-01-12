@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->float('price', 8,2);
+            $table->float('price');
             $table->integer('card_count');
             $table->foreignId('type_id');
             $table->foreignId('set_id');

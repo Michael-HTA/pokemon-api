@@ -18,8 +18,8 @@ class CardController extends Controller
      */
     public function index()
     {
-        $user = Card::where('user_id',Auth::id());
-        $card = Card::latest()->filter()->where('active',1)->union($user)->get();
+        $user = Card::where('user_id', Auth::id());
+        $card = Card::latest()->filter()->where('active', 1)->union($user)->get();
         $type = Type::all();
         $set = Set::all();
         $rarity = Rarity::all();
@@ -37,40 +37,41 @@ class CardController extends Controller
      * Store a newly created resource in storage.
      */
 
-    private function infoValidation(){
+    private function infoValidation()
+    {
         return request()->validate([
             'name' => 'required|string',
-            'price' => 'required|decimal:2',
+            'price' => 'required',
             'card_count' => 'required|integer',
             'type_id' => 'required|integer',
             'set_id' => 'required|integer',
             'image' => 'image',
-            'active' =>Rule::in([0,1]),
+            'active' => Rule::in([0, 1]),
             'rarity_id' => 'required|integer',
         ]);
     }
 
-    private function infoSaving($card){
-
-        if(request()->hasFile('image')){
-            if($card->image){
+    private function infoSaving(Request $request, $card)
+    {
+        if ($request->hasFile('image')) {
+            if ($card->image) {
                 Storage::delete($card->image);
             }
-            $card->image = request()->file('image')->store();
+            $card->image = $request->file('image')->store();
         }
 
-        if(request()->has('active')){
-            $card->active = request()->active;
-        }else{
+        if ($request->has('active')) {
+            $card->active = $request->active;
+        } else {
             $card->active = $card->getActive();
         }
 
-        $card->name = request()->name;
-        $card->price = request()->price;
-        $card->card_count = request()->card_count;
-        $card->type_id = request()->type_id;
-        $card->set_id = request()->set_id;
-        $card->rarity_id = request()->rarity_id;
+        $card->name = $request->name;
+        $card->price = $request->price;
+        $card->card_count = $request->card_count;
+        $card->type_id = $request->type_id;
+        $card->set_id = $request->set_id;
+        $card->rarity_id = $request->rarity_id;
         $card->user_id = Auth::id();
         $card->save();
 
@@ -78,17 +79,19 @@ class CardController extends Controller
     }
 
 
+
     public function store()
     {
+        $request = request();
         $this->infoValidation();
         $card = new Card();
-        return $this->infoSaving($card);
+        return $this->infoSaving($request,$card);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Type $card)
+    public function show($card)
     {
         return Card::find($card);
     }
@@ -96,21 +99,24 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Card $card)
+    public function update($id)
     {
         $this->infoValidation();
-        $card = Card::find($card);
-        return $this->infoSaving($card);
+        $card = Card::find($id);
+        $request = request();
+        return $this->infoSaving($request,$card);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Card $card)
+    public function destroy($card)
     {
         $card = Card::find($card);
-        if($card->user_id === Auth::id()){
-            Storage::delete($card->image);
+        if ($card->user_id === Auth::id()) {
+            if($card->image){
+                Storage::delete($card->image);
+            }
             $card->delete();
 
             return ['message' => 'Card have been deleted!'];
