@@ -71,7 +71,7 @@ class CardController extends Controller
         $card->type_id = request()->type_id;
         $card->set_id = request()->set_id;
         $card->rarity_id = request()->rarity_id;
-        $card->user_id = request()->user_id;
+        $card->user_id = Auth::id();
         $card->save();
 
         return $card;
@@ -111,7 +111,11 @@ class CardController extends Controller
         $card = Card::find($card);
         if($card->user_id === Auth::id()){
             Storage::delete($card->image);
-        $card->delete();
+            $card->delete();
+
+            return ['message' => 'Card have been deleted!'];
         }
+
+        return ['message' => "You do not permission to delete this!"];
     }
 }

@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     //
 
-    public function register(Request $request)
+    public function userRegister(Request $request)
     {
 
             //Validated
@@ -32,7 +32,7 @@ class UserController extends Controller
 
         }
 
-    public function login(Request $request)
+    public function userLogin()
     {
 
             $validateUser = request()->validate([
@@ -40,13 +40,13 @@ class UserController extends Controller
                 'password' => 'required',
             ]);
 
-            if(!Auth::attempt($request->only(['email', 'password']))){
+            if(!Auth::attempt(request()->only(['email', 'password']))){
                 return response()->json([
                     'message' => 'Email & Password does not match with our record.',
                 ]);
             }
 
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', request()->email)->first();
 
             return response()->json([
                 'message' => 'User Logged In Successfully',
@@ -54,8 +54,9 @@ class UserController extends Controller
             ]);
     }
 
-    public function logout(Request $request){
+    public function userLogout(Request $request){
         $user = $request->user();
         $user->tokens()->delete();
+        return ['message' => 'Logout Successful!'];
     }
 }

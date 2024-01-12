@@ -18,19 +18,18 @@ use PhpParser\Builder\Class_;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::prefix('/v1/pokemon')->group(function(){
+    Route::post('/login',[UserController::class,'userLogin']);
+    Route::post('/register',[UserController::class,'userRegister']);
 });
 
-Route::prefix('v1')->group(function(){
-    Route::post('/login',[UserController::class,'login']);
-    Route::post('/register',[UserController::class,'register']);
-});
 
-Route::prefix('v1')->middleware(['auth:sanctum'])->group(function(){
+Route::prefix('v1')->middleware('auth:sanctum')->group(function(){
     Route::resource('/card',CardController::class);
     Route::get('/filter/{id}/set',[CategoryController::class,'set']);
     Route::get('/filter/{id}/type',[CategoryController::class,'type']);
     Route::get('/filter/{id}/rarity',[CategoryController::class,'rarity']);
-    Route::get('/logout',[UserController::class,'logout']);
+    Route::get('/pokemon/logout',[UserController::class,'userLogout']);
 });
