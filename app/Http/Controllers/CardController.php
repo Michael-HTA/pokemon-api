@@ -109,7 +109,9 @@ class CardController extends Controller
     public function destroy(Card $card)
     {
         $card = Card::find($card);
-        Storage::delete($card->image);
+        if($card->user_id === Auth::id()){
+            Storage::delete($card->image);
         $card->delete();
+        }
     }
 }

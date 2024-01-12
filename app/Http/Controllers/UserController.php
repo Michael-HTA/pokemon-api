@@ -54,8 +54,8 @@ class UserController extends Controller
             ]);
     }
 
-    public function logout(){
-        $user = Auth::user();
-        $user->currentAccessToken()->delete();
+    public function logout(Request $request){
+        $user = $request->user();
+        $user->tokens()->delete();
     }
 }
