@@ -26,12 +26,4 @@ Run Migrations and Seeding:
 Execute the command: 
     php artisan migrate:fresh --seed
     
-Additional Information:
-    Inspired by Pokémon TCG API: Suggests it shares similarities with the official Pokémon Trading Card Game API.
-    Specific Functionalities: Explore the documentation or code to confirm its exact capabilities.
-    
-Potential Use Cases:
-    Building Pokémon-themed web or mobile applications.
-    Creating personal card collections or decks.
-    Experimenting with card data and implementing game mechanics.
     
