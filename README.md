@@ -1,6 +1,6 @@
 This is the pokemon-api inspired on the Pokemon TCG Api.
 
-Here's a summary of the Pokémon-API and its key features, based on the information you provided:
+Here's a summary of the Pokémon-API and its key features,
 
 Account Management: 
     Allows users to create accounts and log in, providing a token for authentication.
