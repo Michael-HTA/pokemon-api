@@ -18,7 +18,7 @@ class CardController extends Controller
      */
     public function index()
     {
-        $user = Card::where('user_id', Auth::id());
+        $user = Card::latest()->filter()->where('user_id',Auth::id());
         $card = Card::latest()->filter()->where('active', 1)->union($user)->get();
         $type = Type::all();
         $set = Set::all();
